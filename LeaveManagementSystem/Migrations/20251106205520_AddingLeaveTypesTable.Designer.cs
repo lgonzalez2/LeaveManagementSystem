@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251106204440_AddingLeaveTypesTable")]
+    [Migration("20251106205520_AddingLeaveTypesTable")]
     partial class AddingLeaveTypesTable
     {
         /// <inheritdoc />
@@ -35,6 +35,7 @@ namespace LeaveManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("NumberOfDays")
