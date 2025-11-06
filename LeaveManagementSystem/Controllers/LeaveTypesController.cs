@@ -11,6 +11,7 @@ namespace LeaveManagementSystem.Controllers
 {
     public class LeaveTypesController : Controller
     {
+        //Dependency injection - recommended for maintainability
         private readonly ApplicationDbContext _context;
 
         public LeaveTypesController(ApplicationDbContext context)
@@ -21,7 +22,9 @@ namespace LeaveManagementSystem.Controllers
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LeaveTypes.ToListAsync());
+            // var data = SELECT * FROM LeaveTypes
+            var data = await _context.LeaveTypes.ToListAsync();
+            return View(data);
         }
 
         // GET: LeaveTypes/Details/5
