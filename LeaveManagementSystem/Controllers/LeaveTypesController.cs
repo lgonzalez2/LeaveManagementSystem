@@ -46,7 +46,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // GET: LeaveTypes/Create
+        // GET: LeaveTypes/Create - just goes to the form
         public IActionResult Create()
         {
             return View();
@@ -68,7 +68,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // GET: LeaveTypes/Edit/5
+        // GET: LeaveTypes/Edit/5 - just goes to the form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,7 +84,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // POST: LeaveTypes/Edit/5
+        // POST: LeaveTypes/Edit/5 - does the actual work
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -119,7 +119,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // GET: LeaveTypes/Delete/5
+        // GET: LeaveTypes/Delete/5 - just goes to the form
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,7 +137,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // POST: LeaveTypes/Delete/5
+        // POST: LeaveTypes/Delete/5 - does the actual work
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
