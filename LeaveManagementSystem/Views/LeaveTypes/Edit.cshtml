@@ -10,8 +10,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @* Post by default *@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* This line is important here (and not present in the create view) because it keeps track of the record we are updating *@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>

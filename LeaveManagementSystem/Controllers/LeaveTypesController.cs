@@ -36,6 +36,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
+            // Select * from LeaveTypes WHERE Id = @id
             var leaveType = await _context.LeaveTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (leaveType == null)
@@ -68,7 +69,7 @@ namespace LeaveManagementSystem.Controllers
             return View(leaveType);
         }
 
-        // GET: LeaveTypes/Edit/5 - just goes to the form
+        // GET: LeaveTypes/Edit/5 - goes to the form if the record exists
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -116,10 +117,11 @@ namespace LeaveManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            // If there are any issues, this will return you to the form, which will include any inline errors
             return View(leaveType);
         }
 
-        // GET: LeaveTypes/Delete/5 - just goes to the form
+        // GET: LeaveTypes/Delete/5 - goes to the form if the record exists
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,6 +142,8 @@ namespace LeaveManagementSystem.Controllers
         // POST: LeaveTypes/Delete/5 - does the actual work
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        // Notice here that DeleteConfirmed is different from Delete up top (unlike Create and Edit, which are the same for both get and post)
+        // this is because the parameters they take in are the same. So it wouldn't get overloaded, like methods who share the same name but have different parameters
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var leaveType = await _context.LeaveTypes.FindAsync(id);
@@ -152,6 +156,7 @@ namespace LeaveManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // used in Exception catch block
         private bool LeaveTypeExists(int id)
         {
             return _context.LeaveTypes.Any(e => e.Id == id);
