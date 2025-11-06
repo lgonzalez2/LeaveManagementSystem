@@ -20,6 +20,7 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes
+        // This pattern (Task<>) is specific to async
         public async Task<IActionResult> Index()
         {
             // var data = SELECT * FROM LeaveTypes
