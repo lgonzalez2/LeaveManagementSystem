@@ -10,14 +10,17 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @* binding to Create action in controller (post by default) - will go to post-specific Create action in controller *@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                @* binding for Name from the model *@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                @* binding for NumberOfDays from the model *@
                 <label asp-for="NumberOfDays" class="control-label"></label>
                 <input asp-for="NumberOfDays" class="form-control" />
                 <span asp-validation-for="NumberOfDays" class="text-danger"></span>
