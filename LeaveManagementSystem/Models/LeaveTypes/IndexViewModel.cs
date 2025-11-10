@@ -1,7 +1,7 @@
 ﻿namespace LeaveManagementSystem.Models.LeaveTypes
 {
     // the attributes present here are what the view, itself, needs
-    public class IndexViewModel
+    public class LeaveTypeReadOnlyVM
     {
         public int Id { get; set; }
 

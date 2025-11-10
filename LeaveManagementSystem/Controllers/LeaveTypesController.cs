@@ -27,7 +27,7 @@ namespace LeaveManagementSystem.Controllers
             // var data = SELECT * FROM LeaveTypes
             var data = await _context.LeaveTypes.ToListAsync();
             //convert the datamodel to a view model so as to not access the data model directly
-            var viewData = data.Select(q => new IndexViewModel
+            var viewData = data.Select(q => new LeaveTypeReadOnlyVM
             {
                 Id = q.Id,
                 Name = q.Name,
@@ -53,7 +53,14 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(leaveType);
+            var viewData = new LeaveTypeReadOnlyVM
+            {
+                Id = leaveType.Id,
+                Name = leaveType.Name,
+                NumberOfDays = leaveType.NumberOfDays,
+            };
+
+            return View(viewData);
         }
 
         // GET: LeaveTypes/Create - just goes to the form
