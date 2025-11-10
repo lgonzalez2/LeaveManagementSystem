@@ -132,6 +132,11 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
+            if (await CheckIfLeaveTypeNameExistsForEdit(leaveTypeEdit))
+            {
+                ModelState.AddModelError(nameof(leaveTypeEdit.Name), NameExistsValidationMessage);
+            }
+
             if (ModelState.IsValid)
             {
                 var leaveType = new LeaveType
@@ -216,6 +221,12 @@ namespace LeaveManagementSystem.Controllers
         {
             var lowercaseName = name.ToLower();
             return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName));
+        }
+
+        private async Task<bool> CheckIfLeaveTypeNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
+        {
+            var lowercaseName = leaveTypeEdit.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName) && q.Id != leaveTypeEdit.Id);
         }
     }
 }
