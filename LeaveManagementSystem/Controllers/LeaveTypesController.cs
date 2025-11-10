@@ -163,6 +163,7 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Delete/5 - goes to the form if the record exists
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,7 +178,14 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(leaveType);
+            var viewData = new LeaveTypeReadOnlyVM
+            {
+                Id = leaveType.Id,
+                Name = leaveType.Name,
+                NumberOfDays = leaveType.NumberOfDays,
+            };
+
+            return View(viewData);
         }
 
         // POST: LeaveTypes/Delete/5 - does the actual work
