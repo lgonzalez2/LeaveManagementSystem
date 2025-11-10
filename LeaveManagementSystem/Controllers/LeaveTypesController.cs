@@ -14,7 +14,7 @@ namespace LeaveManagementSystem.Controllers
     {
         //Dependency injection - recommended for maintainability
         private readonly ApplicationDbContext _context;
-        private string NameExistsValidationMessage = "This leave type already exists in the database";
+        private const string NameExistsValidationMessage = "This leave type already exists in the database";
 
         public LeaveTypesController(ApplicationDbContext context)
         {
