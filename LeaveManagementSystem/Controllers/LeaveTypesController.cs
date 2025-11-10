@@ -76,10 +76,10 @@ namespace LeaveManagementSystem.Controllers
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
             // Can do additonal checks if there are no sufficient annotations to use in the VM
-            if (leaveTypeCreate.Name.Contains("vacation"))
-            {
-                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name should not contain vacation");
-            }
+            //if (leaveTypeCreate.Name.Contains("vacation"))
+            //{
+            //    ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name should not contain vacation");
+            //}
 
             if (ModelState.IsValid)
             {
@@ -97,6 +97,7 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Edit/5 - goes to the form if the record exists
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -109,23 +110,36 @@ namespace LeaveManagementSystem.Controllers
             {
                 return NotFound();
             }
-            return View(leaveType);
+
+            var viewData = new LeaveTypeEditVM
+            {
+                Id = leaveType.Id,
+                Name = leaveType.Name,
+                NumberOfDays = leaveType.NumberOfDays,
+            };
+
+            return View(viewData);
         }
 
         // POST: LeaveTypes/Edit/5 - does the actual work
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,NumberOfDays")] LeaveType leaveType)
+        public async Task<IActionResult> Edit(int id, LeaveTypeEditVM leaveTypeEdit)
         {
-            if (id != leaveType.Id)
+            if (id != leaveTypeEdit.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var leaveType = new LeaveType
+                {
+                    Id = leaveTypeEdit.Id,
+                    Name = leaveTypeEdit.Name,
+                    NumberOfDays = leaveTypeEdit.NumberOfDays,
+                };
+
                 try
                 {
                     _context.Update(leaveType);
@@ -145,7 +159,7 @@ namespace LeaveManagementSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
             // If there are any issues, this will return you to the form, which will include any inline errors
-            return View(leaveType);
+            return View(leaveTypeEdit);
         }
 
         // GET: LeaveTypes/Delete/5 - goes to the form if the record exists
