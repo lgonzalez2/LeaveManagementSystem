@@ -14,6 +14,7 @@ namespace LeaveManagementSystem.Controllers
     {
         //Dependency injection - recommended for maintainability
         private readonly ApplicationDbContext _context;
+        private string NameExistsValidationMessage = "This leave type already exists in the database";
 
         public LeaveTypesController(ApplicationDbContext context)
         {
@@ -78,7 +79,7 @@ namespace LeaveManagementSystem.Controllers
             // Can do additonal checks if there are no sufficient annotations to use in the VM
             if (await CheckIfLeaveTypeNameExists(leaveTypeCreate.Name))
             {
-                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "This leave type already exists in the database");
+                ModelState.AddModelError(nameof(leaveTypeCreate.Name), NameExistsValidationMessage);
             }
 
             if (ModelState.IsValid)
