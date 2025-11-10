@@ -76,10 +76,10 @@ namespace LeaveManagementSystem.Controllers
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
             // Can do additonal checks if there are no sufficient annotations to use in the VM
-            //if (leaveTypeCreate.Name.Contains("vacation"))
-            //{
-            //    ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name should not contain vacation");
-            //}
+            if (await CheckIfLeaveTypeNameExists(leaveTypeCreate.Name))
+            {
+                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "This leave type already exists in the database");
+            }
 
             if (ModelState.IsValid)
             {
@@ -209,6 +209,12 @@ namespace LeaveManagementSystem.Controllers
         private bool LeaveTypeExists(int id)
         {
             return _context.LeaveTypes.Any(e => e.Id == id);
+        }
+
+        private async Task<bool> CheckIfLeaveTypeNameExists(string name)
+        {
+            var lowercaseName = name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName));
         }
     }
 }
