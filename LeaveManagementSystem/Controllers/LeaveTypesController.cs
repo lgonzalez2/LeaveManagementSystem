@@ -64,25 +64,30 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Create - just goes to the form
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: LeaveTypes/Create - depending on either POST/GET request, either this action or the above will happen respectively
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,NumberOfDays")] LeaveType leaveType)
+        public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
             if (ModelState.IsValid)
             {
+                var leaveType = new LeaveType
+                {
+                    Name = leaveTypeCreate.Name,
+                    NumberOfDays = leaveTypeCreate.NumberOfDays,
+                };
+
                 _context.Add(leaveType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(leaveType);
+            return View(leaveTypeCreate);
         }
 
         // GET: LeaveTypes/Edit/5 - goes to the form if the record exists
