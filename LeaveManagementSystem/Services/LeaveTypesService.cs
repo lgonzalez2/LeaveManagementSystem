@@ -39,6 +39,32 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
         return viewData;
     }
 
+    public async Task CreateLeaveType(LeaveTypeCreateVM leaveTypeCreate)
+    {
+        var data = new LeaveType
+        {
+            Name = leaveTypeCreate.Name,
+            NumberOfDays = leaveTypeCreate.NumberOfDays,
+        };
+
+        _context.Add(data);
+        await _context.SaveChangesAsync();
+
+        return;
+    }
+
+    public async Task<bool> CheckIfLeaveTypeNameExists(string name)
+    {
+        var lowercaseName = name.ToLower();
+        return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName));
+    }
+
+    public async Task<bool> CheckIfLeaveTypeNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
+    {
+        var lowercaseName = leaveTypeEdit.Name.ToLower();
+        return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName) && q.Id != leaveTypeEdit.Id);
+    }
+
     public async Task RemoveLeaveType(int id)
     {
         var data = await _context.LeaveTypes.FindAsync(id);
