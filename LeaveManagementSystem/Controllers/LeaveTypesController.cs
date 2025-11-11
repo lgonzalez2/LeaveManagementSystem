@@ -20,7 +20,7 @@ namespace LeaveManagementSystem.Controllers
         public async Task<IActionResult> Index()
         {
             var viewData = await _leaveTypesService.GetAllLeaveTypes();
-            //return the view model to the view
+
             return View(viewData);
         }
 
@@ -32,20 +32,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            // Select * from LeaveTypes WHERE Id = @id
-            var leaveType = await _context.LeaveTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leaveType == null)
-            {
-                return NotFound();
-            }
-
-            var viewData = new LeaveTypeReadOnlyVM
-            {
-                Id = leaveType.Id,
-                Name = leaveType.Name,
-                NumberOfDays = leaveType.NumberOfDays,
-            };
+           var viewData = await _leaveTypesService.GetLeaveType(id);
 
             return View(viewData);
         }
