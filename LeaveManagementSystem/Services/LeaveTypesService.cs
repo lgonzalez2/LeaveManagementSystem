@@ -39,6 +39,20 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
         return viewData;
     }
 
+    public async Task<LeaveTypeEditVM> GetLeaveTypeEdit(int? id)
+    {
+        var data = await _context.LeaveTypes.FindAsync(id) ?? throw new KeyNotFoundException($"LeaveType with id {id} not found."); ;
+ 
+        var viewData = new LeaveTypeEditVM
+        {
+            Id = data.Id,
+            Name = data.Name,
+            NumberOfDays = data.NumberOfDays,
+        };
+
+        return viewData;
+    }
+
     public async Task CreateLeaveType(LeaveTypeCreateVM leaveTypeCreate)
     {
         var data = new LeaveType
@@ -59,10 +73,31 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
         return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName));
     }
 
+    public async Task EditLeaveType(LeaveTypeEditVM leaveTypeEdit)
+    {
+        var data = new LeaveType
+        {
+            Id = leaveTypeEdit.Id,
+            Name = leaveTypeEdit.Name,
+            NumberOfDays = leaveTypeEdit.NumberOfDays,
+        };
+        
+        _context.Update(data);
+        await _context.SaveChangesAsync();
+
+        return;
+    }
+
     public async Task<bool> CheckIfLeaveTypeNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
     {
         var lowercaseName = leaveTypeEdit.Name.ToLower();
         return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName) && q.Id != leaveTypeEdit.Id);
+    }
+
+    // used in Exception catch block
+    public bool LeaveTypeExists(int id)
+    {
+        return _context.LeaveTypes.Any(e => e.Id == id);
     }
 
     public async Task RemoveLeaveType(int id)

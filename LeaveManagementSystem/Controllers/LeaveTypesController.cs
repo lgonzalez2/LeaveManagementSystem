@@ -6,12 +6,8 @@ using LeaveManagementSystem.Services;
 
 namespace LeaveManagementSystem.Controllers
 {
-    public class LeaveTypesController(ApplicationDbContext context, ILeaveTypesService leaveTypesService) : Controller
+    public class LeaveTypesController(ILeaveTypesService leaveTypesService) : Controller
     {
-        //Dependency injection - recommended for maintainability
-        //Remove after all service methods have been created
-        private readonly ApplicationDbContext _context;
-
         private const string NameExistsValidationMessage = "This leave type already exists in the database";
         private readonly ILeaveTypesService _leaveTypesService = leaveTypesService;
 
@@ -38,7 +34,6 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Create - just goes to the form
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -64,7 +59,6 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Edit/5 - goes to the form if the record exists
-        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,18 +66,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var leaveType = await _context.LeaveTypes.FindAsync(id);
-            if (leaveType == null)
-            {
-                return NotFound();
-            }
-
-            var viewData = new LeaveTypeEditVM
-            {
-                Id = leaveType.Id,
-                Name = leaveType.Name,
-                NumberOfDays = leaveType.NumberOfDays,
-            };
+            var viewData = await _leaveTypesService.GetLeaveTypeEdit(id);
 
             return View(viewData);
         }
@@ -105,21 +88,13 @@ namespace LeaveManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                var leaveType = new LeaveType
-                {
-                    Id = leaveTypeEdit.Id,
-                    Name = leaveTypeEdit.Name,
-                    NumberOfDays = leaveTypeEdit.NumberOfDays,
-                };
-
                 try
                 {
-                    _context.Update(leaveType);
-                    await _context.SaveChangesAsync();
+                    await _leaveTypesService.EditLeaveType(leaveTypeEdit);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LeaveTypeExists(leaveType.Id))
+                    if (!_leaveTypesService.LeaveTypeExists(leaveTypeEdit.Id))
                     {
                         return NotFound();
                     }
@@ -135,7 +110,6 @@ namespace LeaveManagementSystem.Controllers
         }
 
         // GET: LeaveTypes/Delete/5 - goes to the form if the record exists
-        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,12 +131,6 @@ namespace LeaveManagementSystem.Controllers
         {
             await _leaveTypesService.RemoveLeaveType(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        // used in Exception catch block
-        private bool LeaveTypeExists(int id)
-        {
-            return _context.LeaveTypes.Any(e => e.Id == id);
         }
     }
 }
