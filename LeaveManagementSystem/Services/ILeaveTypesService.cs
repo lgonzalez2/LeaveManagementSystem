@@ -1,0 +1,9 @@
+﻿using LeaveManagementSystem.Models.LeaveTypes;
+
+namespace LeaveManagementSystem.Services
+{
+    public interface ILeaveTypesService
+    {
+        Task<List<LeaveTypeReadOnlyVM>> GetAllLeaveTypes();
+    }
+}

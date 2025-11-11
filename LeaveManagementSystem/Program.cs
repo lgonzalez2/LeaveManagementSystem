@@ -1,4 +1,5 @@
 using LeaveManagementSystem.Data;
+using LeaveManagementSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>();
 
 // Add identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
