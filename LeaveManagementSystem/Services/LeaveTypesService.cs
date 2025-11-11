@@ -19,38 +19,15 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
             Name = q.Name,
             NumberOfDays = q.NumberOfDays,
         }).ToList();
-        
-        return viewData;
-    }
-
-    public async Task<LeaveTypeReadOnlyVM> GetLeaveType(int? id)
-    {
-        // Select * from LeaveTypes WHERE Id = @id
-        var data = await _context.LeaveTypes
-            .FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException($"LeaveType with id {id} not found.");
-        
-        var viewData = new LeaveTypeReadOnlyVM
-        {
-            Id = data.Id,
-            Name = data.Name,
-            NumberOfDays = data.NumberOfDays,
-        };
 
         return viewData;
     }
 
-    public async Task<LeaveTypeEditVM> GetLeaveTypeEdit(int? id)
+    public async Task<T> GetLeaveType<T>(int? id, Func<LeaveType, T> map) where T : class
     {
-        var data = await _context.LeaveTypes.FindAsync(id) ?? throw new KeyNotFoundException($"LeaveType with id {id} not found."); ;
- 
-        var viewData = new LeaveTypeEditVM
-        {
-            Id = data.Id,
-            Name = data.Name,
-            NumberOfDays = data.NumberOfDays,
-        };
+        var viewData = await _context.LeaveTypes.FindAsync(id) ?? throw new KeyNotFoundException($"LeaveType with id {id} not found.");
 
-        return viewData;
+        return map(viewData);
     }
 
     public async Task CreateLeaveType(LeaveTypeCreateVM leaveTypeCreate)
@@ -81,7 +58,7 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
             Name = leaveTypeEdit.Name,
             NumberOfDays = leaveTypeEdit.NumberOfDays,
         };
-        
+
         _context.Update(data);
         await _context.SaveChangesAsync();
 

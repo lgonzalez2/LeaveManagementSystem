@@ -28,7 +28,12 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-           var viewData = await _leaveTypesService.GetLeaveType(id);
+           var viewData = await _leaveTypesService.GetLeaveType(id, data => new LeaveTypeReadOnlyVM
+           {
+            Id = data.Id,
+            Name = data.Name,
+            NumberOfDays = data.NumberOfDays
+           });
 
             return View(viewData);
         }
@@ -66,7 +71,12 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var viewData = await _leaveTypesService.GetLeaveTypeEdit(id);
+            var viewData = await _leaveTypesService.GetLeaveType(id, data => new LeaveTypeEditVM
+            {
+                Id = data.Id,
+                Name = data.Name,
+                NumberOfDays = data.NumberOfDays
+            });
 
             return View(viewData);
         }
@@ -117,7 +127,12 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var viewData = await _leaveTypesService.GetLeaveType(id);
+            var viewData = await _leaveTypesService.GetLeaveType(id, data => new LeaveTypeReadOnlyVM
+            {
+                Id = data.Id,
+                Name = data.Name,
+                NumberOfDays = data.NumberOfDays
+            });
 
             return View(viewData);
         }
