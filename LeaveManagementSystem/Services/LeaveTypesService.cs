@@ -26,16 +26,28 @@ public class LeaveTypesService(ApplicationDbContext context) : ILeaveTypesServic
     public async Task<LeaveTypeReadOnlyVM> GetLeaveType(int? id)
     {
         // Select * from LeaveTypes WHERE Id = @id
-        var leaveType = await _context.LeaveTypes
+        var data = await _context.LeaveTypes
             .FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException($"LeaveType with id {id} not found.");
         
         var viewData = new LeaveTypeReadOnlyVM
         {
-            Id = leaveType.Id,
-            Name = leaveType.Name,
-            NumberOfDays = leaveType.NumberOfDays,
+            Id = data.Id,
+            Name = data.Name,
+            NumberOfDays = data.NumberOfDays,
         };
 
         return viewData;
+    }
+
+    public async Task RemoveLeaveType(int id)
+    {
+        var data = await _context.LeaveTypes.FindAsync(id);
+        if (data != null)
+        {
+            _context.LeaveTypes.Remove(data);
+            await _context.SaveChangesAsync();
+        }
+
+        return;
     }
 }

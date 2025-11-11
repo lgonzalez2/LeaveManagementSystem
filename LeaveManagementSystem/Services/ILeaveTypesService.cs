@@ -6,5 +6,6 @@ namespace LeaveManagementSystem.Services
     {
         Task<List<LeaveTypeReadOnlyVM>> GetAllLeaveTypes();
         Task<LeaveTypeReadOnlyVM> GetLeaveType(int? id);
+        Task RemoveLeaveType(int id);
     }
 }

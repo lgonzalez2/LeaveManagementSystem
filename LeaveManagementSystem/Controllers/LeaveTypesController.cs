@@ -150,19 +150,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var leaveType = await _context.LeaveTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leaveType == null)
-            {
-                return NotFound();
-            }
-
-            var viewData = new LeaveTypeReadOnlyVM
-            {
-                Id = leaveType.Id,
-                Name = leaveType.Name,
-                NumberOfDays = leaveType.NumberOfDays,
-            };
+            var viewData = await _leaveTypesService.GetLeaveType(id);
 
             return View(viewData);
         }
@@ -174,13 +162,7 @@ namespace LeaveManagementSystem.Controllers
         // this is because the parameters they take in are the same. So it wouldn't get overloaded, like methods who share the same name but have different parameters
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var leaveType = await _context.LeaveTypes.FindAsync(id);
-            if (leaveType != null)
-            {
-                _context.LeaveTypes.Remove(leaveType);
-            }
-
-            await _context.SaveChangesAsync();
+            await _leaveTypesService.RemoveLeaveType(id);
             return RedirectToAction(nameof(Index));
         }
 

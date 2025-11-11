@@ -10,6 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Add service layer
 builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>();
 
 // Add identity
