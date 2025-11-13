@@ -11,7 +11,7 @@ namespace LeaveManagementSystem.Data
         //This sets a specific type for the below column
         //[Column(TypeName = "nvarchar(150)")]
         [MaxLength(150)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public int NumberOfDays { get; set; }
     }
