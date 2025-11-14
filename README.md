@@ -1,6 +1,6 @@
 # Leave Management System (First .Net project)
 
-## Preview:
+## Preview (old - there has been more features added):
 
 https://github.com/user-attachments/assets/fc39c3e0-a267-4322-ae2b-f064d66ef057
 
