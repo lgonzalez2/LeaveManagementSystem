@@ -4,6 +4,7 @@ using LeaveManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251118192601_RemoveNullables")]
+    partial class RemoveNullables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,15 +187,15 @@ namespace LeaveManagementSystem.Migrations
                         {
                             Id = "e6db69f3-7231-4770-9927-c61b6c28801a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "59e1191f-3f7e-43b0-8971-ea66d7013224",
+                            ConcurrencyStamp = "b065218e-a3b9-499c-a8f6-6e7c5f2fb819",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKDWmGniTirmKJBtDpXo6PipGlflV11tE7LfIduKaG/FbJqXWSzg9F+YgcR1dfIYzQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA8eRZRlcUiNSFf9K4oe2ROnO5ti8PN1StaLbZmMzRCSvUVkRZ8O8kMjPUNqvoVmzw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "37582766-333d-49c3-9063-ce7106685ca1",
+                            SecurityStamp = "53b478e9-5c7e-4a6e-ac55-e99da120d26d",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });

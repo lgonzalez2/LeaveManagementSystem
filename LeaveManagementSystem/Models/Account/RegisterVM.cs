@@ -17,10 +17,13 @@ namespace LeaveManagementSystem.Models.Account
         [Compare("ConfirmPassword", ErrorMessage = "Password does not match.")]
         public string Password { get; set; }
 
-
         [Required(ErrorMessage = "Confirm Password is required.")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+
+        public string RoleName { get; set; }
+
+        public string?[] Roles { get; set; } = Array.Empty<string?>();
     }
 }

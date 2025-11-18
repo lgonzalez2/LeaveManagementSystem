@@ -2,6 +2,8 @@
 using LeaveManagementSystem.Models.LeaveTypes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Controllers
 {
@@ -9,11 +11,13 @@ namespace LeaveManagementSystem.Controllers
     {
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public IActionResult Login()
@@ -40,9 +44,14 @@ namespace LeaveManagementSystem.Controllers
             return View(model);
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            return View();
+            var viewData = new RegisterVM
+            {
+                Roles = await roleManager.Roles.Select(q => q.Name).Where(q => q != "Administrator").ToArrayAsync()
+            };
+
+            return View(viewData);
         }
 
         [HttpPost]
@@ -61,6 +70,12 @@ namespace LeaveManagementSystem.Controllers
 
                 if (result.Succeeded)
                 {
+                    // Assign role if chosen
+                    if (!string.IsNullOrEmpty(model.RoleName))
+                    {
+                        await userManager.AddToRoleAsync(user, model.RoleName);
+                    }
+
                     return RedirectToAction(nameof(Login));
                 } else
                 {
@@ -70,6 +85,10 @@ namespace LeaveManagementSystem.Controllers
                     }
                 }
             }
+
+            // Repopulate roles if validation fails
+            model.Roles = await roleManager.Roles.Where(r => r.Name != "Administrator").Select(r => r.Name).ToArrayAsync();
+            
             return View(model);
         }
 
