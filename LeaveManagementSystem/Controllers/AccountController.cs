@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.EntityFrameworkCore;
+using LeaveManagementSystem.Common;
 
 namespace LeaveManagementSystem.Controllers
 {
@@ -48,7 +49,7 @@ namespace LeaveManagementSystem.Controllers
         {
             var viewData = new RegisterVM
             {
-                Roles = await roleManager.Roles.Select(q => q.Name).Where(q => q != "Administrator").ToArrayAsync()
+                Roles = await roleManager.Roles.Select(q => q.Name).Where(q => q != Roles.Administrator).ToArrayAsync()
             };
 
             return View(viewData);
@@ -87,7 +88,7 @@ namespace LeaveManagementSystem.Controllers
             }
 
             // Repopulate roles if validation fails
-            model.Roles = await roleManager.Roles.Where(r => r.Name != "Administrator").Select(r => r.Name).ToArrayAsync();
+            model.Roles = await roleManager.Roles.Where(r => r.Name != Roles.Administrator).Select(r => r.Name).ToArrayAsync();
             
             return View(model);
         }
