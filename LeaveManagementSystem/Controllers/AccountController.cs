@@ -78,6 +78,26 @@ namespace LeaveManagementSystem.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmail(VerifyEmailVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByNameAsync(model.Email);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "User was not found!");
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction("ChangePassword", "Account", new { userName = user.UserName });
+                }
+            }
+            return View(model);
+        }
+
         public IActionResult ChangePassword()
         {
             return View();
