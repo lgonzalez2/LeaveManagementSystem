@@ -98,9 +98,53 @@ namespace LeaveManagementSystem.Controllers
             return View(model);
         }
 
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(string userName)
         {
-            return View();
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToAction(nameof(VerifyEmail));
+            }
+
+            return View(new ChangePasswordVM { Email = userName });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByNameAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await userManager.RemovePasswordAsync(user);
+                    
+                    if (result.Succeeded)
+                    {
+                        result = await userManager.AddPasswordAsync(user, model.NewPassword);
+                        return RedirectToAction(nameof(Login));
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Email not found!");
+                    return View(model);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Something went wrong!");
+                return View(model);
+            }
         }
     }
 }
