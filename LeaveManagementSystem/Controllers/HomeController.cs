@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using LeaveManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LeaveManagementSystem.Controllers
@@ -18,6 +19,8 @@ namespace LeaveManagementSystem.Controllers
             return View();
         }
 
+        // Adding for testing Login/Logout functionality easily. Remove when implementing actual feature.
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
