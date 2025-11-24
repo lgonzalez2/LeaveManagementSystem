@@ -1,8 +1,7 @@
 # Leave Management System (First .Net project)
 
-## Preview:
-
-[Recording 2025-11-14 112018.zip](https://github.com/user-attachments/files/23555525/Recording.2025-11-14.112018.zip)
+## Demo:
+https://youtu.be/vzRvYju_52M
 
 ## Running locally:
 - Clone repository into your local machine 
